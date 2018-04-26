@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.xyj.appsys.dao.AppDao" >
+	<select id="queryAllApps" resultType="appInfo">
+		select * from app_info;
+	</select>
+	<select id="queryAppsByPage" resultType="appInfo">
+		select * from app_info limit #{startIndex},#{pageSize};
+	</select>
+	<select id="queryAppsLikeParams" resultType="appInfo">
+		select * from app_info where softwareName like CONCAT ('%',#{softwareName},'%') limit #{startIndex},#{pageSize};
+	</select>
+	<select id="queryAppsLikeParam" resultType="appInfo">
+		select * from app_info where softwareName like CONCAT ('%',#{softwareName},'%') ;
+	</select>
+	<select id="queryAppsByCategories" resultType="appInfo">
+		SELECT * FROM app_info 
+		<where>
+			<if test="status != null">and status=#{queryStatus}</if>
+			<if test="flatformId !=  null">and flatformId=#{queryFlatformId}</if>
+			<if test="categoryLevel1 !=  null">and categoryLevel1=#{queryCategoryLevel1}</if>
+			<if test="categoryLevel2 !=  null">and categoryLevel2=#{queryCategoryLevel2}</if>
+			<if test="categoryLevel3 !=  null">and categoryLevel3=#{queryCategoryLevel3}</if>			
+		</where>
+	</select>
+	<select id="queryAppsByCategoriesLimit" resultType="appInfo">
+		SELECT * FROM app_info 
+		<where>
+			<if test="status != null">and status=#{queryStatus}</if>
+			<if test="flatformId !=  null">and flatformId=#{queryFlatformId}</if>
+			<if test="categoryLevel1 !=  null">and categoryLevel1=#{queryCategoryLevel1}</if>
+			<if test="categoryLevel2 !=  null">and categoryLevel2=#{queryCategoryLevel2}</if>
+			<if test="categoryLevel3 !=  null">and categoryLevel3=#{queryCategoryLevel3}</if>			
+		</where>
+		limit #{startIndex},#{pageSize};
+	</select>
+	<select id="queryAppById" resultType="appInfo">
+		select * from app_info where id=#{id};
+	</select>
+	<update id="setLogoPic">
+		update app_info set logoPicPath=#{logoPicPath} , logoLocPath=#{logoLocPath} where id=#{id};
+	</update>
+	<update id="updateAppInfo" parameterType="appInfo">
+		update app_info 
+		<set>
+			softwareName=#{softwareName},
+			supportROM=#{supportROM},
+			interfaceLanguage=#{interfaceLanguage},
+			softwareSize=#{softwareSize},
+			downloads=#{downloads},
+			flatformId=#{flatformId},
+			categoryLevel1=#{categoryLevel1},
+			categoryLevel2=#{categoryLevel2},
+			categoryLevel3=#{categoryLevel3},
+			appInfo=#{appInfo},
+			<if test="logoPicPath!=null">
+				logoPicPath=#{logoPicPath},
+			</if>
+			<if test="status!=null">
+				status=#{status},
+			</if>
+			<if test="logoLocPath!=null">
+				logoLocPath=#{logoLocPath},
+			</if>
+				versionId=#{versionId},
+		</set> 
+		where id=#{id};
+	</update>
+	<delete id="deleteAppById">
+		delete from app_info where id=#{id};
+	</delete>
+	<insert id="addAppInfo" parameterType="appInfo">
+		insert into app_info values (#{id},#{softwareName},#{APKName},#{supportROM},#{interfaceLanguage},#{softwareSize},#{updateDate},#{devId},#{appInfo},#{status},#{onSaleDate},#{offSaleDate},#{flatformId},#{categoryLevel3},#{downloads},#{createdBy},#{creationDate},#{modifyBy},#{modifyDate},#{categoryLevel1},#{categoryLevel2},#{logoPicPath},#{logoLocPath},#{versionId});
+	</insert>
+</mapper>

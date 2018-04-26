@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.xyj.appsys.dao.AppVersionDao" >
+	<select id="getAppVersion" resultType="appVersion">
+		select * from app_version where id = #{id};
+	</select>
+	<select id="getAppVersions" resultType="appVersion">
+		select * from app_version where appId =#{appId};
+	</select>
+	<insert id="addVersion" parameterType="appVersion">
+		insert into app_version values 
+		(#{id},#{appId},#{versionNo},#{versionInfo},#{publishStatus},#{downloadLink},#{versionSize},#{createdBy},#{creationDate},#{modifyBy},#{modifyDate},#{apkLocPath},#{apkFileName});
+	</insert>
+	<select id="getLatestAppversion" resultType="appVersion">
+		select * from app_version where appId =#{appId} order by id desc limit 1; 
+	</select>
+	<update id="updateVersion" parameterType="appVersion">
+		update app_version set 
+		appId=#{appId},versionNo=#{versionNo},versionInfo=#{versionInfo},publishStatus=#{publishStatus},downloadLink=#{downloadLink},versionSize=#{versionSize},createdBy=#{createdBy},creationDate=#{creationDate},modifyBy=#{modifyBy},modifyDate=#{modifyDate},apkLocPath=#{apkLocPath},apkFileName=#{apkFileName}
+		where id=#{id};
+	</update>
+	<delete id="delVersionByAppId">
+		delete from app_version where appId=#{appId};
+	</delete>	
+
+</mapper>
